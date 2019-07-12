@@ -1,0 +1,16 @@
+FROM jenkins/jnlp-slave:alpine
+
+ENV TERRAFORM_VERSION=0.12.3
+ENV AWS_CLI_VERSION 1.16.140
+
+
+USER root
+
+RUN apk add --update make git curl curl-dev openssh
+RUN curl https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip > terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+RUN unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip -d /bin
+RUN rm -f terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+
+RUN apk add --no-cache python3 
+	
+RUN pip3 --no-cache-dir install awscli==${AWS_CLI_VERSION} 
